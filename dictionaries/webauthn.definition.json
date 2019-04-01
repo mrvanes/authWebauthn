@@ -1,0 +1,17 @@
+{
+	"header_register": {
+		"en": "Webauthn Registration"
+	},
+	"header_validate": {
+		"en": "Webauthn Login"
+	},
+	"insert_token": {
+        "en": "Insert your security token for"
+    },
+    "continue": {
+        "en": "Go!"
+    },
+    "stop": {
+        "en": "Fail!"
+    }
+}

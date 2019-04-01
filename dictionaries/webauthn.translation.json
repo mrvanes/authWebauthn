@@ -1,0 +1,8 @@
+{
+	"header_register": {
+		"nl": "Webauthn Registratie",
+	},
+	"header_validate": {
+		"nl": "Webauthn Login",
+	}
+}
