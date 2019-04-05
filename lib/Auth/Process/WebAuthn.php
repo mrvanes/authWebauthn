@@ -24,6 +24,12 @@ class WebAuthn extends \SimpleSAML\Auth\ProcessingFilter
     private $purpose = null;
 
     /**
+     * The attribute we should generate the targeted id from, or NULL if we should use the
+     * UserID.
+     */
+    private $database = null;
+
+    /**
      * Initialize this filter.
      *
      * @param array $config  Configuration information about this filter.
@@ -35,17 +41,32 @@ class WebAuthn extends \SimpleSAML\Auth\ProcessingFilter
 
         assert(is_array($config));
 
-        if (array_key_exists('attributename', $config)) {
-            if (!is_string($config['attributename'])) {
-                throw new \Exception('Invalid attribute name given to authWebauthn:WebAuthn filter.');
+        if (array_key_exists('id', $config)) {
+            if (!is_string($config['id'])) {
+                throw new \Exception('Invalid id name given to authWebauthn:WebAuthn filter.');
             }
-            $this->attribute = $config['attributename'];
+            $this->id = $config['id'];
         }
         if (array_key_exists('purpose', $config)) {
             if (!in_array($config['purpose'], ['register', 'validate'])) {
                 throw new \Exception('Invalid purpose given to authWebauthn:WebAuthn filter.');
             }
             $this->purpose = $config['purpose'];
+        }
+        if (array_key_exists('database', $config)) {
+            if (!is_string($config['database'])) {
+                throw new \Exception('Invalid database name given to authWebauthn:WebAuthn filter.');
+            }
+            $this->database = $config['database'];
+            if (!file_exists($this->database)) {
+                $db = new \SQLite3($this->database);
+                if (!$db) {
+                    \SimpleSAML\Logger::info(sprintf('Cannot create user database - is the html directory writable by the web server? If not: "mkdir %s; chmod 777 %s"', $config['database'], $config['database']));
+                    throw new \Exception(sprintf("cannot create %s - see error log", $config['database']));
+                }
+                $query = 'CREATE TABLE "keys" ("user" TEXT NOT NULL UNIQUE, "webauthnkeys" TEXT NOT NULL)';
+                $result = $db->query($query);
+            }
         }
 
     }
@@ -60,17 +81,14 @@ class WebAuthn extends \SimpleSAML\Auth\ProcessingFilter
         assert(is_array($state));
         assert(array_key_exists('Attributes', $state));
 
-        if (!array_key_exists($this->attribute, $state['Attributes'])) {
-                throw new \Exception('authWebauthn:WebAuthn: Missing attribute \''.$this->attribute.
+        if (!array_key_exists($this->id, $state['Attributes'])) {
+                throw new \Exception('authWebauthn:WebAuthn: Missing attribute \''.$this->id.
                     '\', which is needed to proceed.');
             }
 
-        $purpose = $this->purpose;
-        $userID = $state['Attributes'][$this->attribute][0];
-
-//         $state['Attributes']['webauthn'] = ["$purpose $userID"];
-        $state['userID'] = $userID;
-        $state['Purpose'] = $purpose;
+        $state['userID'] = $state['Attributes'][$this->id][0];
+        $state['Purpose'] = $this->purpose;
+        $state['db'] = $this->database;
 
         // Save state and redirect
         $id = \SimpleSAML\Auth\State::saveState($state, 'authWebauthn:webauthn');

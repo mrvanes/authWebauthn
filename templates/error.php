@@ -1,18 +1,19 @@
 <?php
 /**
- * Template for Webauthn token registration and validation
+ * Template for Webauthn error page
  *
  * Parameters:
- * - 'target': Target URL.
+ * - 'userid': User ID
  * - 'params': Parameters which should be included in the request.
  *
  * @package SimpleSAMLphp
  */
-$userid = $this-data['userid'];
+
+$userid = htmlspecialchars($this->data['userid']);
 $this->includeAtTemplateBase('includes/header.php');
 ?>
 <h1>Error </h1>
-<p><?php echo $this->t('{authWebauthn:error:no_registration}') . " <b>" . $this->data['userid']; ?></b></p>
+<p><?php echo $this->t('{authWebauthn:error:no_registration}') . " <b>$userid</b>"?></p>
 
 
 <?php

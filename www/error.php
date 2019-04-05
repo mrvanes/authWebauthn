@@ -13,9 +13,8 @@ if (!array_key_exists('StateId', $_REQUEST)) {
 }
 $stateid = $_REQUEST['StateId'];
 $state = \SimpleSAML\Auth\State::loadState($stateid, 'authWebauthn:webauthn');
-$userID = $state['userID'];
 
 $globalConfig = \SimpleSAML\Configuration::getInstance();
 $t = new \SimpleSAML\XHTML\Template($globalConfig, 'authWebauthn:error.php');
-$t->data['userid'] = $userID;
+$t->data['userid'] = $state['userID'];
 $t->show();

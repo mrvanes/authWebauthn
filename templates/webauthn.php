@@ -18,7 +18,6 @@ $target = htmlspecialchars($this->data['target']);
 $userid = htmlspecialchars($this->data['userid']);
 $challenge = htmlspecialchars($this->data['challenge']);
 
-
 ?>
 <h1><?php echo $this->data['header']; ?></h1>
 
