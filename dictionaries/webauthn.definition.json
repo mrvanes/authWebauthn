@@ -1,17 +1,14 @@
 {
-	"header_register": {
-		"en": "Webauthn Registration"
-	},
-	"header_validate": {
-		"en": "Webauthn Login"
-	},
-	"insert_token": {
-        "en": "Insert your security token for"
+    "header_register": {
+        "en": "Webauthn Registration"
     },
-    "continue": {
-        "en": "Go!"
+    "header_validate": {
+        "en": "Webauthn Login"
     },
-    "stop": {
-        "en": "Fail!"
+    "insert_token": {
+        "en": "Insert security token for user"
+    },
+    "take_action": {
+        "en": "Do your thing: press button on key, swipe fingerprint or whatever."
     }
 }

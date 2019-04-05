@@ -67,10 +67,8 @@ class WebAuthn extends \SimpleSAML\Auth\ProcessingFilter
 
         $purpose = $this->purpose;
         $userID = $state['Attributes'][$this->attribute][0];
-        \SimpleSAML\Logger::info("WebAuthn ProcFilter $purpose for $userID");
-//         \SimpleSAML\Logger::info("WebAuthn ProcFilter state:" . print_r($state, true));
 
-        $state['Attributes']['webauthn'] = ["$purpose $userID"];
+//         $state['Attributes']['webauthn'] = ["$purpose $userID"];
         $state['userID'] = $userID;
         $state['Purpose'] = $purpose;
 
@@ -84,19 +82,12 @@ class WebAuthn extends \SimpleSAML\Auth\ProcessingFilter
 
     public function success(&$state)
     {
-        $purpose = $state['Purpose'];
-        $userID = $state['userID'];
-        \SimpleSAML\Logger::info("WebAuthn ProcFilter $purpose for $userID success");
         \SimpleSAML\Auth\ProcessingChain::resumeProcessing($state);
     }
 
     public function fail(&$state)
     {
-        $purpose = $state['Purpose'];
-        $userID = $state['userID'];
-//         \SimpleSAML\Logger::info("WebAuthn ProcFilter $purpose for $userID fail");
-        \SimpleSAML\Logger::info("WebAuthn ProcFilter state:" . print_r($state, true));
-
+        $state['Attributes'] = [];
         \SimpleSAML\Auth\ProcessingChain::resumeProcessing($state);
     }
 

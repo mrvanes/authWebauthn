@@ -110,7 +110,7 @@ went wrong.
 
 */
 
-function webauthnAuthenticate(key, cb){
+function webauthnValidate(key, cb){
 	var pk = JSON.parse(key);
 	var originalChallenge = pk.challenge;
 	pk.challenge = new Uint8Array(pk.challenge);

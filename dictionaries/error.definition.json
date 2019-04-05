@@ -1,0 +1,11 @@
+{
+	"header_register": {
+		"en": "Webauthn Registration"
+	},
+	"header_validate": {
+		"en": "Webauthn Login"
+	},
+	"no_registration": {
+        "en": "No registration info found for user"
+    }
+}

@@ -1,8 +1,14 @@
 {
-	"header_register": {
-		"nl": "Webauthn Registratie",
-	},
-	"header_validate": {
-		"nl": "Webauthn Login",
-	}
+    "header_register": {
+        "nl": "Webauthn Registratie",
+    },
+    "header_validate": {
+        "nl": "Webauthn Login",
+    },
+    "insert_token": {
+        "nl": "Verbind veiligheidssleutel voor"
+    },
+    "take_action": {
+        "nl": "Ga je gang: druk op de knop, vingerafdruk enzovoorts."
+    }
 }
