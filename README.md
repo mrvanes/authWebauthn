@@ -2,6 +2,8 @@
 
 This module implements a simpleSAMLphp authproc that can be used to enforce second factor authentication using Webauthn compatible security devices.
 
+Thanks to [David Earl](https://github.com/davidearl/webauthn) for his excelent headstart on PHP based Webauthn implementation!
+
 ## Usage
 The authproc can be configured as registration or validation proc. Enable the proc on any authsource. One for registration purposes and one for validation purposes:
 
@@ -35,3 +37,4 @@ The authproc can be configured as registration or validation proc. Enable the pr
         ],
     ],
 ```
+
