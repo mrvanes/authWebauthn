@@ -2,6 +2,7 @@
     "name": "mrvanes/simplesamlphp-module-authwebauthn",
     "description": "Webauthn authproc module.",
     "type": "simplesamlphp-module",
+    "license": "LGPL-2.1",
     "require": {
         "simplesamlphp/composer-module-installer": "~1.0"
     }
