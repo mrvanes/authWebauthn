@@ -5,8 +5,8 @@
  * @param array &$hookingo The hookinfo
  */
 
-function authWebauthn_hook_htmlinject(&$hookinfo) {
-    $jsfile = \SimpleSAML\Module::getModuleURL('authWebauthn/resources/js/webauthn.js');
+function authwebauthn_hook_htmlinject(&$hookinfo) {
+    $jsfile = \SimpleSAML\Module::getModuleURL('authwebauthn/resources/js/webauthn.js');
     $hookinfo['head'] = ["<script src='$jsfile'></script>\n"];
     $hookinfo['jquery']['core'] = True;
 }

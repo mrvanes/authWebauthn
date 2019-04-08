@@ -11,7 +11,7 @@
 
 $purpose = htmlspecialchars($this->data['purpose']);
 
-$this->data['header'] = $this->t('{authWebauthn:webauthn:header_'.$purpose.'}');
+$this->data['header'] = $this->t('{authwebauthn:webauthn:header_'.$purpose.'}');
 
 $this->includeAtTemplateBase('includes/header.php');
 $target = htmlspecialchars($this->data['target']);
@@ -21,7 +21,7 @@ $challenge = htmlspecialchars($this->data['challenge']);
 ?>
 <h1><?php echo $this->data['header']; ?></h1>
 
-    <p><?php echo $this->t('{authWebauthn:webauthn:insert_token}') . " <b>$userid</b>"; ?></p>
+    <p><?php echo $this->t('{authwebauthn:webauthn:insert_token}') . " <b>$userid</b>"; ?></p>
 
     <p><div class='cerror'></div></p>
     <form id='i<?php echo $purpose; ?>form' action='<?php echo $target; ?>' method='POST'>
@@ -35,7 +35,7 @@ foreach ($this->data['params'] as $name => $value) {
     <input type='hidden' id='i<?php echo $purpose?>' name='i<?php echo $purpose?>' value='test'>
     </form>
     <div id='ido'>
-    <p><?php echo $this->t('{authWebauthn:webauthn:take_action}')?></p>
+    <p><?php echo $this->t('{authwebauthn:webauthn:take_action}')?></p>
     </div>
 
 <script>

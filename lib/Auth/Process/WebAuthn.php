@@ -1,6 +1,6 @@
 <?php
 
-namespace SimpleSAML\Module\authWebauthn\Auth\Process;
+namespace SimpleSAML\Module\authwebauthn\Auth\Process;
 
 /**
  * Filter that requires valid Webauthn
@@ -43,19 +43,19 @@ class WebAuthn extends \SimpleSAML\Auth\ProcessingFilter
 
         if (array_key_exists('id', $config)) {
             if (!is_string($config['id'])) {
-                throw new \Exception('Invalid id name given to authWebauthn:WebAuthn filter.');
+                throw new \Exception('Invalid id name given to authwebauthn:WebAuthn filter.');
             }
             $this->id = $config['id'];
         }
         if (array_key_exists('purpose', $config)) {
             if (!in_array($config['purpose'], ['register', 'validate'])) {
-                throw new \Exception('Invalid purpose given to authWebauthn:WebAuthn filter.');
+                throw new \Exception('Invalid purpose given to authwebauthn:WebAuthn filter.');
             }
             $this->purpose = $config['purpose'];
         }
         if (array_key_exists('database', $config)) {
             if (!is_string($config['database'])) {
-                throw new \Exception('Invalid database name given to authWebauthn:WebAuthn filter.');
+                throw new \Exception('Invalid database name given to authwebauthn:WebAuthn filter.');
             }
             $this->database = $config['database'];
             if (!file_exists($this->database)) {
@@ -82,7 +82,7 @@ class WebAuthn extends \SimpleSAML\Auth\ProcessingFilter
         assert(array_key_exists('Attributes', $state));
 
         if (!array_key_exists($this->id, $state['Attributes'])) {
-                throw new \Exception('authWebauthn:WebAuthn: Missing attribute \''.$this->id.
+                throw new \Exception('authwebauthn:WebAuthn: Missing attribute \''.$this->id.
                     '\', which is needed to proceed.');
             }
 
@@ -91,8 +91,8 @@ class WebAuthn extends \SimpleSAML\Auth\ProcessingFilter
         $state['db'] = $this->database;
 
         // Save state and redirect
-        $id = \SimpleSAML\Auth\State::saveState($state, 'authWebauthn:webauthn');
-        $url = \SimpleSAML\Module::getModuleURL('authWebauthn/webauthn.php');
+        $id = \SimpleSAML\Auth\State::saveState($state, 'authwebauthn:webauthn');
+        $url = \SimpleSAML\Module::getModuleURL('authwebauthn/webauthn.php');
         \SimpleSAML\Utils\HTTP::redirectTrustedURL($url, ['StateId' => $id]);
 //         \SimpleSAML\Utils\HTTP::submitPOSTData($url, ['StateId' => $id]);
 

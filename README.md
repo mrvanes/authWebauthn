@@ -1,4 +1,4 @@
-# SimpleSAMLphp authWebauthn authproc module
+# SimpleSAMLphp authwebauthn authproc module
 
 This module implements a simpleSAMLphp authproc that can be used to enforce second factor authentication using Webauthn compatible security devices.
 
@@ -18,7 +18,7 @@ The authproc can be configured as registration or validation proc. Enable the pr
         'discoURL' => null,
         'authproc' => [
             // Add Webauthn second factor registration
-            100 => ['class' => 'authWebauthn:WebAuthn',
+            100 => ['class' => 'authwebauthn:WebAuthn',
                     'id' => 'uid',
                     'database' => '/var/www/webauthn/users/keys.sq3',
                     'purpose' => 'register'
@@ -32,7 +32,7 @@ The authproc can be configured as registration or validation proc. Enable the pr
         'discoURL' => null,
         'authproc' => [
             // Add Webauthn second factor validation
-            100 => ['class' => 'authWebauthn:WebAuthn',
+            100 => ['class' => 'authwebauthn:WebAuthn',
                     'id' => 'uid',
                     'database' => '/var/www/webauthn/users/keys.sq3',
                     'purpose' => 'validate'

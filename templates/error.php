@@ -13,7 +13,7 @@ $userid = htmlspecialchars($this->data['userid']);
 $this->includeAtTemplateBase('includes/header.php');
 ?>
 <h1>Error </h1>
-<p><?php echo $this->t('{authWebauthn:error:no_registration}') . " <b>$userid</b>"?></p>
+<p><?php echo $this->t('{authwebauthn:error:no_registration}') . " <b>$userid</b>"?></p>
 
 
 <?php

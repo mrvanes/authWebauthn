@@ -14,10 +14,10 @@ if (!array_key_exists('StateId', $_REQUEST)) {
 }
 
 $stateid = $_REQUEST['StateId'];
-$state = \SimpleSAML\Auth\State::loadState($stateid, 'authWebauthn:webauthn');
+$state = \SimpleSAML\Auth\State::loadState($stateid, 'authwebauthn:webauthn');
 
 // $session = \SimpleSAML\Session::getSessionFromRequest();
-$webauthn = new \SimpleSAML\Module\authWebauthn\Auth\Source\WebAuthn($_SERVER['HTTP_HOST']);
+$webauthn = new \SimpleSAML\Module\authwebauthn\WebAuthn($_SERVER['HTTP_HOST']);
 
 $purpose = $state['Purpose'];
 $userID = $state['userID'];
@@ -56,7 +56,7 @@ if (!empty($_POST)) {
         if (!$keys) $keys = $webauthn->cancel();
         $keys = $webauthn->register($response, $keys);
         if (putuser($userID, json_encode($keys))) {
-            \SimpleSAML\Module\authWebauthn\Auth\Process\WebAuthn::success($state);
+            \SimpleSAML\Module\authwebauthn\Auth\Process\WebAuthn::success($state);
         }
 
     // This is the validation response
@@ -64,9 +64,9 @@ if (!empty($_POST)) {
         $response = $_POST['ivalidate'];
         $keys = getuser($userID);
         if ($webauthn->authenticate($response, $keys)) {
-            \SimpleSAML\Module\authWebauthn\Auth\Process\WebAuthn::success($state);
+            \SimpleSAML\Module\authwebauthn\Auth\Process\WebAuthn::success($state);
         } else {
-            \SimpleSAML\Module\authWebauthn\Auth\Process\WebAuthn::fail($state);
+            \SimpleSAML\Module\authwebauthn\Auth\Process\WebAuthn::fail($state);
         }
     }
 }
@@ -80,14 +80,14 @@ if ($purpose == 'register') {
     if ($keys) {
         $challenge = $webauthn->prepare_for_login($keys);
     } else {
-        $url = \SimpleSAML\Module::getModuleURL('authWebauthn/error.php');
+        $url = \SimpleSAML\Module::getModuleURL('authwebauthn/error.php');
         \SimpleSAML\Utils\HTTP::submitPOSTData($url, ['StateId' => $stateid]);
     }
 }
 
 $globalConfig = \SimpleSAML\Configuration::getInstance();
-$t = new \SimpleSAML\XHTML\Template($globalConfig, 'authWebauthn:webauthn.php');
-$t->data['target'] = \SimpleSAML\Module::getModuleURL('authWebauthn/webauthn.php');
+$t = new \SimpleSAML\XHTML\Template($globalConfig, 'authwebauthn:webauthn.php');
+$t->data['target'] = \SimpleSAML\Module::getModuleURL('authwebauthn/webauthn.php');
 $t->data['pageid'] = 'WebAuthn';
 $t->data['params'] = ['StateId' => $stateid];
 $t->data['purpose'] = $purpose;

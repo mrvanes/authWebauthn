@@ -27,7 +27,7 @@
  * - openssl that supports SHA256
  */
 
-namespace SimpleSAML\Module\authWebauthn\Auth\Source;
+namespace SimpleSAML\Module\authwebauthn;
 
 class WebAuthn {
 
