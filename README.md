@@ -7,8 +7,12 @@ Thanks to [David Earl](https://github.com/davidearl/webauthn) for his excelent h
 ## Requirements
 This module uses a php-sqlite3 database to store user/key combinations.
 
+## Installation
+```composer require mrvanes/simplesamlphp-module-authwebauthn:dev-master```
+
 ## Usage
-The authproc can be configured as registration or validation proc. Enable the proc on any authsource. One for registration purposes and one for validation purposes:
+The authproc can be configured as registration or validation proc. Enable the proc on any authsource.
+E.g. one for registration purposes and one for validation purposes:
 
 ```
     'sp-register' => [
