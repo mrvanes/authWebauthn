@@ -1,0 +1,8 @@
+{
+    "name": "mrvanes/simplesamlphp-module-authwebauthn",
+    "description": "Webauthn authproc module.",
+    "type": "simplesamlphp-module",
+    "require": {
+        "simplesamlphp/composer-module-installer": "~1.0"
+    }
+}
