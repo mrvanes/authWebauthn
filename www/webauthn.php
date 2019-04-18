@@ -31,9 +31,10 @@ if (!$db) {
 
 function getuser($username) {
     global $db;
-    $query = "SELECT webauthnkeys from keys where user='$username'";
-    $result = $db->query($query);
-    $row = $result->fetchArray();
+    $query = "SELECT webauthnkeys from keys where user=:username";
+    $st = $db->prepare($query);
+    $st->bindValue(':username', $username);
+    $row = $st->execute()->fetchArray();
     $keys = json_decode($row[0]);
     if (!$keys) return false;
     return $keys;
@@ -41,10 +42,11 @@ function getuser($username) {
 
 function putuser($username, $keys) {
     global $db;
-    $query  = "INSERT INTO keys (user, webauthnkeys) VALUES('$username', '$keys') ";
-    $query .= "ON CONFLICT(user) ";
-    $query .= "DO UPDATE SET webauthnkeys = '$keys'";
-    return $db->query($query);
+    $query  = "INSERT OR REPLACE INTO keys (user, webauthnkeys) VALUES (:username, :keys)";
+    $st = $db->prepare($query);
+    $st->bindValue(':username', $username);
+    $st->bindValue(':keys', $keys);
+    return $st->execute();
 }
 
 // Handle POST
