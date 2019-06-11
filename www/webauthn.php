@@ -77,14 +77,27 @@ if (!empty($_POST)) {
 if ($purpose == 'register') {
     $id = $userID; // $userID is displayName, $id is unique ID
     $challenge = $webauthn->prepare_challenge_for_registration($userID, $id);
-} elseif ($purpose == 'validate') {
+} else {
+    // Look for registered user keys
     $keys = getuser($userID);
-    if ($keys) {
-        $challenge = $webauthn->prepare_for_login($keys);
-    } else {
-        $url = \SimpleSAML\Module::getModuleURL('authwebauthn/error.php');
-        \SimpleSAML\Utils\HTTP::submitPOSTData($url, ['StateId' => $stateid]);
+    if (!$keys) {
+        if ($purpose == 'validate') {
+            // Validation without key is impossible
+            $url = \SimpleSAML\Module::getModuleURL('authwebauthn/error.php');
+            \SimpleSAML\Utils\HTTP::submitPOSTData($url, ['StateId' => $stateid]);
+        } else {
+            // This is !register & !keys & !validate (must be fallback, so register)
+            $state['Purpose'] = 'register';
+            $id = \SimpleSAML\Auth\State::saveState($state, 'authwebauthn:webauthn');
+            $url = \SimpleSAML\Module::getModuleURL('authwebauthn/webauthn.php');
+            \SimpleSAML\Utils\HTTP::redirectTrustedURL($url, ['StateId' => $id]);
+        }
     }
+    // We have keys, and want to validate or fallback to validate
+    $challenge = $webauthn->prepare_for_login($keys);
+    $purpose = 'validate';
+    $state['Purpose'] = 'validate';
+    $stateid = \SimpleSAML\Auth\State::saveState($state, 'authwebauthn:webauthn');
 }
 
 $globalConfig = \SimpleSAML\Configuration::getInstance();
