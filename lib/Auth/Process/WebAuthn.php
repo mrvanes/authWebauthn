@@ -48,7 +48,7 @@ class WebAuthn extends \SimpleSAML\Auth\ProcessingFilter
             $this->id = $config['id'];
         }
         if (array_key_exists('purpose', $config)) {
-            if (!in_array($config['purpose'], ['register', 'validate', ['fallback'])) {
+            if (!in_array($config['purpose'], ['register', 'validate', 'fallback'])) {
                 throw new \Exception('Invalid purpose given to authwebauthn:WebAuthn filter.');
             }
             $this->purpose = $config['purpose'];
