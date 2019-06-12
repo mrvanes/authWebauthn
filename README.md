@@ -24,7 +24,7 @@ E.g. one for registration purposes and one for validation purposes:
             // Add Webauthn second factor registration
             100 => ['class' => 'authwebauthn:WebAuthn',
                     'id' => 'uid',
-                    'database' => '/var/www/webauthn/users/keys.sq3',
+                    'database' => '/var/tmp/keys.sq3',
                     'purpose' => 'register'
                     ],
         ],
@@ -38,10 +38,28 @@ E.g. one for registration purposes and one for validation purposes:
             // Add Webauthn second factor validation
             100 => ['class' => 'authwebauthn:WebAuthn',
                     'id' => 'uid',
-                    'database' => '/var/www/webauthn/users/keys.sq3',
+                    'database' => '/var/tmp/keys.sq3',
                     'purpose' => 'validate'
                     ],
         ],
     ],
 ```
+Or on hosted IdP using fallback scenario (register if unable to validate)
+```
+$metadata['__DYNAMIC:1__'] = [
+    'host' => '__DEFAULT__',
+    'privatekey' => 'server.pem',
+    'certificate' => 'server.crt',
+    'auth' => 'example-userpass',
+    'attributes.NameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
+    'authproc' => [
+            // Add Webauthn second factor validation
+            100 => ['class' => 'authwebauthn:WebAuthn',
+                    'id' => 'uid',
+                    'database' => '/var/tmp/keys.sq3',
+                    'purpose' => 'fallback'
+                    ],
+        ],
+    ],
+];```
 
