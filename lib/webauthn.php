@@ -103,7 +103,8 @@ class WebAuthn {
    *        this code)
    * @return string modified to store in the user's webauthn field in your database
    */
-  function register($info, $userwebauthn) {
+//   function register($info, $userwebauthn) {
+  function register($info) {
     if (! is_string ($info)) { $this->oops('info must be a string', 1); }
     $info = json_decode($info);
     if (empty($info)) { $this->oops('info is not properly JSON encoded', 1); }
@@ -168,20 +169,20 @@ class WebAuthn {
     $publicKey->id = $info->rawId;
     //log($publicKey->key);
 
-    if (empty($userwebauthn)) {
-      $userwebauthn = [$publicKey];
-    } else {
-      $userwebauthn = json_decode($userwebauthn);
-      $found = FALSE;
-      foreach($userwebauthn as $idx => $key) {
-        if (implode(',', $key->id) != implode(',', $publicKey->id)) { continue; }
-        $userwebauthn[$idx]->key = $publicKey->key;
-        $found = TRUE;
-        break;
-      }
-      if (! $found) { array_unshift($userwebauthn, $publicKey); }
-    }
-    $userwebauthn = json_encode($userwebauthn);
+//     if (empty($userwebauthn)) {
+//       $userwebauthn = [$publicKey];
+//     } else {
+//       $userwebauthn = json_decode($userwebauthn);
+//       $found = FALSE;
+//       foreach($userwebauthn as $idx => $key) {
+//         if (implode(',', $key->id) != implode(',', $publicKey->id)) { continue; }
+//         $userwebauthn[$idx]->key = $publicKey->key;
+//         $found = TRUE;
+//         break;
+//       }
+//       if (! $found) { array_unshift($userwebauthn, $publicKey); }
+//     }
+    $userwebauthn = $publicKey;
     return $userwebauthn;
   }
 

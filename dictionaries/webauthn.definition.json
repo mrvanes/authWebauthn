@@ -9,6 +9,9 @@
         "en": "Insert security token for user"
     },
     "take_action": {
-        "en": "Do your thing: press button on key, swipe fingerprint or whatever."
+        "en": "Do your thing: press button on key, swipe fingerprint or whatever"
+    },
+    "validate": {
+        "en": "Continue validating your key"
     }
 }

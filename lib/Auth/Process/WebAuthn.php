@@ -64,8 +64,8 @@ class WebAuthn extends \SimpleSAML\Auth\ProcessingFilter
                     \SimpleSAML\Logger::info(sprintf('Cannot create user database - is the html directory writable by the web server? If not: "mkdir %s; chmod 777 %s"', $config['database'], $config['database']));
                     throw new \Exception(sprintf("cannot create %s - see error log", $config['database']));
                 }
-                $query = 'CREATE TABLE "keys" ("user" TEXT NOT NULL UNIQUE, "webauthnkeys" TEXT NOT NULL)';
-                $result = $db->query($query);
+                $result = $db->exec('CREATE TABLE "keys" ("user" TEXT NOT NULL, "id" TEXT NOT NULL, "key" TEXT NOT NULL)');
+                $result = $db->exec('CREATE UNIQUE INDEX "user_id" on keys (user ASC, id ASC)');
             }
         }
 
@@ -86,15 +86,20 @@ class WebAuthn extends \SimpleSAML\Auth\ProcessingFilter
                     '\', which is needed to proceed.');
             }
 
+        \SimpleSAML\Logger::info(sprintf('Processing authwebauthn: %s', $this->purpose));
+
         $state['userID'] = $state['Attributes'][$this->id][0];
         $state['Purpose'] = $this->purpose;
         $state['db'] = $this->database;
 
         // Save state and redirect
+        if ($this->purpose == 'register') {
+            $url = \SimpleSAML\Module::getModuleURL('authwebauthn/register.php');
+        } else {
+            $url = \SimpleSAML\Module::getModuleURL('authwebauthn/validate.php');
+        }
         $id = \SimpleSAML\Auth\State::saveState($state, 'authwebauthn:webauthn');
-        $url = \SimpleSAML\Module::getModuleURL('authwebauthn/webauthn.php');
         \SimpleSAML\Utils\HTTP::redirectTrustedURL($url, ['StateId' => $id]);
-//         \SimpleSAML\Utils\HTTP::submitPOSTData($url, ['StateId' => $id]);
 
     }
 
@@ -106,7 +111,10 @@ class WebAuthn extends \SimpleSAML\Auth\ProcessingFilter
     public function fail(&$state)
     {
         $state['Attributes'] = [];
-        \SimpleSAML\Auth\ProcessingChain::resumeProcessing($state);
+        $id = \SimpleSAML\Auth\State::saveState($state, 'authwebauthn:webauthn');
+        $url = \SimpleSAML\Module::getModuleURL('authwebauthn/error.php');
+        \SimpleSAML\Utils\HTTP::submitPOSTData($url, ['StateId' => $id]);
+//         \SimpleSAML\Auth\ProcessingChain::resumeProcessing($state);
     }
 
 }

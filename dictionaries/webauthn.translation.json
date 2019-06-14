@@ -9,6 +9,9 @@
         "nl": "Verbind veiligheidssleutel voor"
     },
     "take_action": {
-        "nl": "Ga je gang: druk op de knop, vingerafdruk enzovoorts."
+        "nl": "Ga je gang: druk op de knop, vingerafdruk enzovoorts"
+    },
+    "validate": {
+        "nl": "Ga verder met key validatie"
     }
 }

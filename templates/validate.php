@@ -32,7 +32,7 @@ foreach ($this->data['params'] as $name => $value) {
 }
 ?>
     <input type='hidden' id='ichallenge' name='ichallenge' value='<?php echo $challenge?>'>
-    <input type='hidden' id='i<?php echo $purpose?>' name='i<?php echo $purpose?>' value='test'>
+    <input type='hidden' id='i<?php echo $purpose?>' name='i<?php echo $purpose?>' value='empty'>
     </form>
     <div id='ido'>
     <p><?php echo $this->t('{authwebauthn:webauthn:take_action}')?></p>
@@ -44,22 +44,6 @@ $(function(){
     purpose = "<?php echo $purpose?>";
     challenge = $('#ichallenge').val();
 
-    if (purpose == 'register') {
-        $('.cerror').empty().hide();
-
-        /* activate the key and get the response */
-        webauthnRegister(challenge, function(success, info) {
-            if (success) {
-                $('#iregister').val(info);
-                $('#iregisterform').submit();
-            } else {
-                $('.cerror').text(info).show();
-                $('#ido').hide();
-            }
-        });
-
-    };
-
     if (purpose == 'validate') {
         $('.cerror').empty().hide();
 
@@ -70,7 +54,8 @@ $(function(){
                 $('#ivalidateform').submit();
             } else {
                 $('.cerror').text(info).show();
-                $('#ido').hide();
+                $('#ivalidateform').submit();
+//                 $('#ido').hide();
             }
         });
     };
