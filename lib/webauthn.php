@@ -60,7 +60,7 @@ class WebAuthn {
    *                user perhaps the database record id
    * @return string pass this JSON string back to the browser
    */
-  function prepare_challenge_for_registration($username, $userid){
+  function prepare_challenge_for_registration($username, $userid, $exclude){
     $result = (object)array();
     $rbchallenge = random_bytes(16);
     $result->challenge = self::string_to_array($rbchallenge);
@@ -85,7 +85,19 @@ class WebAuthn {
 
     $result->attestation = NULL;
     $result->timeout = 60000;
-    $result->excludeCredentials = []; // No excludeList
+
+    $denies = array();
+    if (! empty($exclude)) {
+      $deny = (object)array();
+      $deny->type = 'public-key';
+      $deny->transports = array('usb','nfc','ble');
+      foreach(json_decode($exclude) as $key) {
+        $deny->id = $key->id;
+        $denies[] = clone $deny;
+      }
+    }
+
+    $result->excludeCredentials = $denies;
     $result->extensions = (object)array();
     $result->extensions->exts = TRUE;
 
@@ -284,7 +296,7 @@ class WebAuthn {
     /* experience shows that at least one device (OnePlus 6T/Pie (Android phone)) doesn't set this,
        so this test would fail. This is not correct according to the spec, so  pragmatically it may
        have to be removed */
-    if (!($ao->flags & 0x1)) { $this->oops('cannot decode key response (2c)'); } /* only TUP must be set */
+    if (! ($ao->flags & 0x1)) { $this->oops('cannot decode key response (2c)'); } /* only TUP must be set */
 
     /* assemble signed data */
     $clientdata = self::array_to_string($info->response->clientDataJSONarray);

@@ -121,12 +121,12 @@ if ($validated && !empty($_GET)) {
 }
 
 // Prepare Challenge
+$keys = getuser($userID);
 if ($purpose == 'validate') {
-    $keys = getuser($userID);
     $challenge = $webauthn->prepare_for_login($keys);
 } else {
     $id = $userID; // $userID is displayName, $id is unique ID
-    $challenge = $webauthn->prepare_challenge_for_registration($userID, $id);
+    $challenge = $webauthn->prepare_challenge_for_registration($userID, $id, $keys);
 }
 
 \SimpleSAML\Auth\State::saveState($state, 'authwebauthn:webauthn');
