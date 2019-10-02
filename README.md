@@ -44,7 +44,7 @@ E.g. one for registration purposes and one for validation purposes:
         ],
     ],
 ```
-Or on hosted IdP using fallback scenario (register if unable to validate)
+Or on hosted IdP using fallback scenario (register if unable to validate, i.e. Trust On First Use)
 ```
 $metadata['__DYNAMIC:1__'] = [
     'host' => '__DEFAULT__',
